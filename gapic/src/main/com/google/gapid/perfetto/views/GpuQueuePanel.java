@@ -19,7 +19,6 @@ import static com.google.gapid.perfetto.views.Loading.drawLoading;
 import static com.google.gapid.perfetto.views.StyleConstants.SELECTION_THRESHOLD;
 import static com.google.gapid.perfetto.views.StyleConstants.TRACK_MARGIN;
 import static com.google.gapid.perfetto.views.StyleConstants.colors;
-import static com.google.gapid.perfetto.views.StyleConstants.gradient;
 import static com.google.gapid.util.MoreFutures.transform;
 
 import com.google.common.collect.Lists;
@@ -115,7 +114,7 @@ public class GpuQueuePanel extends TrackPanel<GpuQueuePanel> implements Selectab
 
         // Render slice entity.
         // Grey out if there's vulkan api event selection but this GPU queue slice is not linked.
-        StyleConstants.Gradient color = gradient(data.titles[i].hashCode());
+        StyleConstants.Gradient color = getSliceColor(data.titles[i]);
         if (!selectedSIds.isEmpty() && i < sIds.length && !selectedSIds.contains(sIds[i])) {
           ctx.setBackgroundColor(color.disabled);
         } else {
@@ -266,7 +265,7 @@ public class GpuQueuePanel extends TrackPanel<GpuQueuePanel> implements Selectab
     }
   }
 
-  private Set<Long> getSelectedSubmissionIdsInVulkanEventTrack(State state) {
+  private static Set<Long> getSelectedSubmissionIdsInVulkanEventTrack(State state) {
     Selection<Long> selection = state.getSelection(Selection.Kind.VulkanEvent);
     Set<Long> res = Sets.newHashSet();    // On Vulkan Event Track.
     if (selection instanceof VulkanEventTrack.Slice) {

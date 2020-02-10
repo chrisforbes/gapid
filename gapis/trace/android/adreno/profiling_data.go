@@ -197,6 +197,10 @@ func processGpuSlices(ctx context.Context, processor *perfetto.Processor, handle
 			Value: &service.ProfilingData_GpuSlices_Slice_Extra_IntValue{IntValue: uint64(hwQueueIds[i])},
 		})
 
+		if names[i] == "Surface" {
+			names[i] = fmt.Sprintf("%v", groups[groupIds[i]].Link)
+		}
+
 		slices[i] = &service.ProfilingData_GpuSlices_Slice{
 			Ts:      uint64(timestamps[i]),
 			Dur:     uint64(durations[i]),
